@@ -22,7 +22,7 @@ This project is still a work in progress. Not all APIs were implemented.
         ;; using environment variables by default
         (env)
         ;; also load properties from classpath
-        (properties (file "classpath:/default.properties"))
+        (properties (classpath "/default.properties"))
         ;; and fetch a remote json configuration. check every 10 seconds
         ;; for update.
         (poll (json (url "http://somehost/configuration/my.json"))
@@ -31,6 +31,12 @@ This project is still a work in progress. Not all APIs were implemented.
 ;; get configuration
 (get-int-config config :some.config.key)
 ```
+
+## Features
+
+* Extensible configuration sources and formats
+* Reloadable by watching file system or poll the source
+* Type conversion
 
 ## License
 
