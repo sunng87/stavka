@@ -1,11 +1,15 @@
-(ns stavka.protocols)
+(ns stavka.protocols
+  (:refer-clojure :exclude [resolve]))
 
 (defprotocol Source
-  (reload! [this] "returns input stream for the source"))
+  (reload [this] "returns input stream for the source"))
 
 (defprotocol Updater
-  (start! [this])
-  (stop! [this]))
+  (start! [this] "start updater")
+  (stop! [this] "stop updater"))
 
 (defprotocol Resolver
-  (resolve [this key]))
+  (resolve [this data key] "resolve key"))
+
+(defprotocol Format
+  (parse [this input-stream] "parse configuration from input-stream"))

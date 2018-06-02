@@ -15,7 +15,7 @@ which manages configuration from various sources.
         ;; using environment variables by default
         (env)
         ;; also load properties from classpath
-        (properties (classpath "/default.properties"))
+        (properties (file "classpath:/default.properties"))
         ;; and fetch a remote json configuration. check every 10 seconds
         ;; for update.
         (poll (json (url "http://somehost/configuration/my.json"))

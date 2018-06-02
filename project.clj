@@ -8,4 +8,5 @@
                  [cheshire "5.8.0"]
                  [circleci/clj-yaml "0.5.6"]
                  [clj-http "3.9.0"]
-                 [hawk "0.2.11"]])
+                 [hawk "0.2.11"]]
+  :dev-dependencies [tortue/spy "1.4.0"])
