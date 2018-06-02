@@ -1,7 +1,14 @@
 # stavka
 
+[![Build Status](https://travis-ci.org/sunng87/stavka.png?branch=master)](https://travis-ci.org/sunng87/stavka)
+[![Clojars](https://img.shields.io/clojars/v/stavka/stavka.svg)](https://clojars.org/stavka)
+[![License](https://img.shields.io/badge/license-eclipse-blue.svg)](https://github.com/sunng87/stavka/blob/master/LICENSE)
+[![Donate](https://img.shields.io/badge/donate-liberapay-yellow.svg)](https://liberapay.com/Sunng/donate)
+
 Stavka (Ставка) is the high command of your clojure application,
 which manages configuration from various sources.
+
+This project is still a work in progress. Not all APIs were implemented.
 
 ## Usage
 
@@ -31,3 +38,8 @@ Copyright © 2018 Ning Sun
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+## Donation
+
+I'm now accepting donation on [liberapay](https://liberapay.com/Sunng/donate),
+if you find my work helpful and want to keep it going.
