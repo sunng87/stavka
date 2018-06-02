@@ -6,7 +6,7 @@ which manages configuration from various sources.
 ## Usage
 
 ```clj
-(require '[stavka.core :as sta])
+(require '[stavka.core :as sta :refer :all])
 
 (def config
     ;; load configuration from multiple sources and merge them like
