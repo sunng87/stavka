@@ -1,7 +1,7 @@
 # stavka
 
 [![Build Status](https://travis-ci.org/sunng87/stavka.png?branch=master)](https://travis-ci.org/sunng87/stavka)
-[![Clojars](https://img.shields.io/clojars/v/stavka/stavka.svg)](https://clojars.org/stavka)
+[![Clojars](https://img.shields.io/clojars/v/stavka.svg)](https://clojars.org/stavka)
 [![License](https://img.shields.io/badge/license-eclipse-blue.svg)](https://github.com/sunng87/stavka/blob/master/LICENSE)
 [![Donate](https://img.shields.io/badge/donate-liberapay-yellow.svg)](https://liberapay.com/Sunng/donate)
 
@@ -35,7 +35,21 @@ This project is still a work in progress. Not all APIs were implemented.
 ## Features
 
 * Extensible configuration sources and formats
-* Reloadable by watching file system or poll the source
+  * Sources:
+    * Classpath
+    * File system
+    * URL
+    * JDBC (to be provided as example of extending stavka)
+  * Formats:
+    * Environment variables
+    * JSON
+    * YAML
+    * Properties
+* Reloading by
+  * Watching file system
+  * Polling the source
+  * JMX
+* Listeners for source changing
 * Type conversion
 
 ## License
