@@ -2,10 +2,16 @@
   (:require [stavka.protocols :as sp]
             [clj-http.client :as httpc]))
 
+(def default-http-options
+  {:as :stream
+   :trace-redirects true})
+
 (defrecord UrlLoader [url http-options]
   sp/Source
   (reload [this]
-    (httpc/get url (assoc http-options :as :stream))))
+    (-> url
+        (httpc/get (merge default-http-options http-options))
+        :body)))
 
 (defn url
   "returns a url loader"

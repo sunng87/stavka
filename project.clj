@@ -9,6 +9,7 @@
                  [circleci/clj-yaml "0.5.6"]
                  [clj-http "3.9.0"]
                  [hawk "0.2.11"]]
+  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.11.1" :scope "test"]]}}
   :plugins [[lein-codox "0.9.5"]]
   :codox {:output-path "target/codox"
           :source-uri "https://github.com/sunng87/stavka/blob/master/{filepath}#L{line}"
