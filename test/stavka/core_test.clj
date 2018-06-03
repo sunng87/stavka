@@ -32,4 +32,8 @@
           (is (= 1 (get-config conf :object.child)))
           (is (= "jetty9" (get-config conf :server))))
         (finally
-          (rj9a/stop-server server))))))
+          (rj9a/stop-server server)))))
+  (testing "get yaml"
+    (let [conf (using (yaml (classpath "/test.yaml")))]
+      (is (= "127.0.0.1" (get-config conf :spring.datasource.host)))
+      (is (= 3306 (get-config conf :spring.datasource.port))))))

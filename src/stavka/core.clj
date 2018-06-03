@@ -6,6 +6,7 @@
             [stavka.sources.file]
             [stavka.sources.url]
             [stavka.formats.json]
+            [stavka.formats.yaml]
             [stavka.formats.properties]
             [stavka.utils :as utils])
   (:import [java.util Properties]))
@@ -43,13 +44,25 @@
     holder))
 
 (defn properties
-  "java.util.properties from some source"
+  "java.util.Properties from some source"
   [source]
   (let [holder (ConfigHolder. (atom (Properties.))
                               source
                               nil ;; updater
                               (stavka.formats.properties/the-format)
                               (stavka.resolvers.properties/resolver)
+                              [])]
+    (load-from-source! holder)
+    holder))
+
+(defn yaml
+  "YAML configuration from source source"
+  [source]
+  (let [holder (ConfigHolder. (atom {})
+                              source
+                              nil ;; update
+                              (stavka.formats.yaml/the-format)
+                              (stavka.resolvers.dict/resolver)
                               [])]
     (load-from-source! holder)
     holder))
