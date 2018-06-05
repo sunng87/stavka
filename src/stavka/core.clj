@@ -1,6 +1,7 @@
 (ns stavka.core
   (:require [stavka.protocols :as sp]
             [stavka.resolvers.env]
+            [stavka.resolvers.options]
             [stavka.resolvers.dict]
             [stavka.resolvers.properties]
             [stavka.sources.file]
@@ -30,6 +31,11 @@
   "Environment variables as configuration source."
   []
   (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver) []))
+
+(defn options
+  "JVM option as configuration source."
+  []
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) []))
 
 (defn json
   "JSON configuration from some source"
@@ -77,7 +83,7 @@
   ([holders key] (get-config holders key nil))
   ([holders key default-value]
    (or (->> holders
-            (map #(sp/resolve (.-resolver %) (utils/deref-safe (.-state %)) key))
+            (map #(sp/resolve (.-resolver %) (utils/deref-safe (.-state %)) (name key)))
             (filter some?)
             first)
        default-value)))

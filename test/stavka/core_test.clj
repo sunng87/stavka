@@ -36,4 +36,7 @@
   (testing "get yaml"
     (let [conf (using (yaml (classpath "/test.yaml")))]
       (is (= "127.0.0.1" (get-config conf :spring.datasource.host)))
-      (is (= 3306 (get-config conf :spring.datasource.port))))))
+      (is (= 3306 (get-config conf :spring.datasource.port)))))
+  (testing "get from jvm options"
+    (let [conf (using (options))]
+      (is (= "yes" (get-config conf :stavka.test.attr))))))

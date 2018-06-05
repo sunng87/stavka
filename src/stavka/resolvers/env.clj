@@ -5,7 +5,7 @@
 (defrecord EnvironmentVariableResolver []
   sp/Resolver
   (resolve [_ _ key]
-    (e/env key)))
+    (e/env (keyword key))))
 
 (def instance (EnvironmentVariableResolver.))
 

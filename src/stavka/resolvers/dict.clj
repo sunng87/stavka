@@ -5,7 +5,7 @@
 (defrecord DictionaryResolver []
   sp/Resolver
   (resolve [this dict key]
-    (let [key-path (str/split (name key) #"\.")]
+    (let [key-path (str/split key #"\.")]
       (get-in dict key-path))))
 
 (def instance (DictionaryResolver.))

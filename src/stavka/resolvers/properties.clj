@@ -5,7 +5,7 @@
 (defrecord PropertiesResolver []
   sp/Resolver
   (resolve [this prop key]
-    (.getProperty ^Properties prop ^String (name key))))
+    (.getProperty ^Properties prop ^String key)))
 
 (def instance (PropertiesResolver.))
 
