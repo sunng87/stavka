@@ -1,12 +1,15 @@
 (ns stavka.resolvers.env
-  (:require [environ.core :as e]
-            [stavka.protocols :as sp]))
+  (:require [stavka.protocols :as sp]
+            [clojure.string :as str]))
 
-(defrecord EnvironmentVariableResolver []
+(defn transform-env-key [m]
+  (into {} (map #(vector (str/lower-case (key %)) (val %)) m)))
+
+(defrecord EnvironmentVariableResolver [envs]
   sp/Resolver
   (resolve [_ _ key]
-    (e/env (keyword key))))
+    (envs key)))
 
-(def instance (EnvironmentVariableResolver.))
+(def instance (EnvironmentVariableResolver. (transform-env-key (System/getenv))))
 
 (defn resolver [] instance)
