@@ -14,6 +14,8 @@
 
 (defrecord ConfigHolder [state source updater format resolver listeners])
 
+(defrecord UpdaterSourceHolder [source updater])
+
 ;; source loaders
 (utils/import-var file stavka.sources.file/file)
 (utils/import-var url stavka.sources.url/url)
@@ -26,9 +28,30 @@
     ;; TODO: trigger listener
     (reset! (.-state holder) result)))
 
+(defn- holder-from-source [source initial-state format resolver]
+  (let [[source updater-factory] (if (vector? source)
+                                   source
+                                   [source nil])
+        holder-ref (promise)
+        updater (when updater-factory
+                  (updater-factory #(when-let [inner @holder-ref]
+                                      (load-from-source! inner))))
+        holder (ConfigHolder. (atom initial-state)
+                              source
+                              updater
+                              format
+                              resolver
+                              [])]
+    (deliver holder-ref holder)
+    (load-from-source! holder)
+    (when updater
+      (sp/start! updater))
+    holder))
+
 ;; resolvers
 (defn env
   "Environment variables as configuration source."
+  ;; TODO: env separator transformer
   []
   (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver) []))
 
@@ -40,38 +63,23 @@
 (defn json
   "JSON configuration from some source"
   [source]
-  (let [holder (ConfigHolder. (atom {})
-                              source
-                              nil ;; updater
-                              (stavka.formats.json/the-format)
-                              (stavka.resolvers.dict/resolver)
-                              [])]
-    (load-from-source! holder)
-    holder))
+  (holder-from-source source {}
+                      (stavka.formats.json/the-format)
+                      (stavka.resolvers.dict/resolver)))
 
 (defn properties
   "java.util.Properties from some source"
   [source]
-  (let [holder (ConfigHolder. (atom (Properties.))
-                              source
-                              nil ;; updater
-                              (stavka.formats.properties/the-format)
-                              (stavka.resolvers.properties/resolver)
-                              [])]
-    (load-from-source! holder)
-    holder))
+  (holder-from-source source (Properties.)
+                      (stavka.formats.properties/the-format)
+                      (stavka.resolvers.properties/resolver)))
 
 (defn yaml
   "YAML configuration from source source"
   [source]
-  (let [holder (ConfigHolder. (atom {})
-                              source
-                              nil ;; update
-                              (stavka.formats.yaml/the-format)
-                              (stavka.resolvers.dict/resolver)
-                              [])]
-    (load-from-source! holder)
-    holder))
+  (holder-from-source source {}
+                      (stavka.formats.yaml/the-format)
+                      (stavka.resolvers.dict/resolver)))
 
 (defmacro using
   "Put your configuration sources inside to create a configuration store."

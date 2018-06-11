@@ -13,6 +13,8 @@
       (hawk/stop! watcher))))
 
 (defn watch [file-source]
-  (fn [reload-fn]
-    ;; FIXME: extract file from file-source
-    (FileWatchUpdater. file-source (atom {}) reload-fn)))
+  (if-let [file (:file file-source)]
+    [file-source
+     (fn [reload-fn]
+       (FileWatchUpdater. file (atom {}) reload-fn))]
+    (throw (IllegalArgumentException. "Watcher can only work with file source."))))
