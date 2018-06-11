@@ -23,10 +23,11 @@ This project is still a work in progress. Not all APIs were implemented.
         (env)
         ;; also load properties from classpath
         (properties (classpath "/default.properties"))
+        ;; load another properties from filesystem, and watch is for change
+        (properties (watch (file "/etc/stavka.properties")))
         ;; and fetch a remote json configuration. check every 10 seconds
         ;; for update.
-        (poll (json (url "http://somehost/configuration/my.json"))
-            10000)))
+        (json (poll (url "http://somehost/configuration/my.json") 10000))))
 
 ;; get configuration
 (get-int-config config :some.config.key)
@@ -42,6 +43,7 @@ This project is still a work in progress. Not all APIs were implemented.
     * JDBC (to be provided as example of extending stavka)
   * Formats:
     * Environment variables
+    * JVM options (-D)
     * JSON
     * YAML
     * Properties
