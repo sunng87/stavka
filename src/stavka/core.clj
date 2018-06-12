@@ -6,6 +6,7 @@
             [stavka.resolvers.properties]
             [stavka.sources.file]
             [stavka.sources.url]
+            [stavka.updaters.watcher]
             [stavka.formats.json]
             [stavka.formats.yaml]
             [stavka.formats.properties]
@@ -79,6 +80,9 @@
   (holder-from-source source {}
                       (stavka.formats.yaml/the-format)
                       (stavka.resolvers.dict/resolver)))
+
+;; updaters
+(utils/import-var watch stavka.updaters.watcher/watch)
 
 (defmacro using
   "Put your configuration sources inside to create a configuration store."

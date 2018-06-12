@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
             [stavka.core :refer :all]
             [ring.adapter.jetty9 :as rj9a]
-            [cheshire.core :as che]))
+            [cheshire.core :as che]
+            [clojure.java.io :as io]))
 
 (deftest test-apis
   (testing "get config from environment"
@@ -39,4 +40,20 @@
       (is (= 3306 (get-config conf :spring.datasource.port)))))
   (testing "get from jvm options"
     (let [conf (using (options))]
-      (is (= "yes" (get-config conf :stavka.test.attr))))))
+      (is (= "yes" (get-config conf :stavka.test.attr)))))
+  (testing "file watch updater"
+    (let [conf (using (json (watch (file "./dev-resources/test.json"))))]
+      (is (= 1 (get-config conf :object.child))))))
+
+(deftest test-file-watch-updater
+  (testing "create a file and watch for change"
+    (let [path "./target/watch-test.json"]
+      (try
+        (spit path (che/generate-string {:test 1}))
+        (let [conf (using (json (watch (file path))))]
+          (is (= 1 (get-config conf :test)))
+          (spit path (che/generate-string {:test 2}))
+          (Thread/sleep 100)
+          (is (= 2 (get-config conf :test))))
+        (finally
+          (io/delete-file path))))))
