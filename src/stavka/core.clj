@@ -51,9 +51,8 @@
 ;; resolvers
 (defn env
   "Environment variables as configuration source."
-  ;; TODO: env separator transformer
-  []
-  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver) []))
+  [& {:as options}]
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options) []))
 
 (defn options
   "JVM option as configuration source."
