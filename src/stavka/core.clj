@@ -94,7 +94,7 @@
   [& holders]
   `(reverse (vector ~@holders)))
 
-(defn get-config
+(defn $
   "Get configuration item from store."
   ([holders key] (get-config holders key nil))
   ([holders key default-value]

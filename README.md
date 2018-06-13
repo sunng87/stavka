@@ -30,7 +30,7 @@ This project is still a work in progress. Not all APIs were implemented.
         (json (poll (url "http://somehost/configuration/my.json") 10000))))
 
 ;; get configuration
-(get-int-config config :some.config.key)
+($ config :some.config.key)
 ```
 
 ## Features
