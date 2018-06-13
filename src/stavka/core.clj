@@ -96,7 +96,7 @@
 
 (defn $
   "Get configuration item from store."
-  ([holders key] (get-config holders key nil))
+  ([holders key] ($ holders key nil))
   ([holders key default-value]
    (or (->> holders
             (map #(sp/resolve (.-resolver %) (utils/deref-safe (.-state %)) (name key)))
