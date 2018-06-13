@@ -7,6 +7,7 @@
             [stavka.sources.file]
             [stavka.sources.url]
             [stavka.updaters.watcher]
+            [stavka.updaters.poller]
             [stavka.formats.json]
             [stavka.formats.yaml]
             [stavka.formats.properties]
@@ -29,7 +30,10 @@
     ;; TODO: trigger listener
     (reset! (.-state holder) result)))
 
-(defn- holder-from-source [source initial-state format resolver]
+(defn holder-from-source
+  "Create a holder from source readable source, useful when creating your own
+  configuration format"
+  [source initial-state format resolver]
   (let [[source updater-factory] (if (vector? source)
                                    source
                                    [source nil])
@@ -83,6 +87,7 @@
 
 ;; updaters
 (utils/import-var watch stavka.updaters.watcher/watch)
+(utils/import-var poll stavka.updaters.poller/poll)
 
 (defmacro using
   "Put your configuration sources inside to create a configuration store."
