@@ -54,6 +54,8 @@
           (is (= 1 (get-config conf :test)))
           (spit path (che/generate-string {:test 2}))
           (Thread/sleep 100)
-          (is (= 2 (get-config conf :test))))
+          (is (= 2 (get-config conf :test)))
+
+          (stop-updaters! conf))
         (finally
           (io/delete-file path))))))

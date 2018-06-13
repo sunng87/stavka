@@ -98,3 +98,8 @@
             (filter some?)
             first)
        default-value)))
+
+(defn stop-updaters! [holders]
+  (doseq [h holders]
+    (when-let [updater (.-updater h)]
+      (sp/stop! updater))))
