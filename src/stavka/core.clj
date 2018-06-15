@@ -114,7 +114,9 @@
             first)
        default-value)))
 
-(defn stop-updaters! [holders]
-  (doseq [h holders]
-    (when-let [updater (.-updater h)]
-      (sp/stop! updater))))
+(defn stop-updaters!
+  ([] (when-let [holders @global-config]
+        (stop-updaters! holders)))
+  ([holders] (doseq [h holders]
+               (when-let [updater (.-updater h)]
+                 (sp/stop! updater)))))
