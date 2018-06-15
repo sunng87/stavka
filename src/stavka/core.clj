@@ -94,8 +94,18 @@
   [& holders]
   `(reverse (vector ~@holders)))
 
+(defonce global-config (atom nil))
+
+(defmacro global!
+  "Create global stavka configuration."
+  [& holders]
+  `(let [config# (using ~@holders)]
+     (reset! global-config config#)))
+
 (defn $
   "Get configuration item from store."
+  ([key] (when-let [holders @global-config]
+           ($ holders key)))
   ([holders key] ($ holders key nil))
   ([holders key default-value]
    (or (->> holders

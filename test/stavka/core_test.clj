@@ -45,6 +45,12 @@
     (let [conf (using (json (watch (file "./dev-resources/test.json"))))]
       (is (= 1 ($ conf :object.child))))))
 
+(deftest test-global
+  (global! (env)
+           (properties (classpath "/test.properties")))
+  (is (some? ($ :user)))
+  (is (= "1" ($ :some.config))))
+
 (deftest test-file-watch-updater
   (testing "create a file and watch for change"
     (let [path "./target/watch-test.json"]
