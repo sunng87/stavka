@@ -9,8 +9,7 @@
       (newThread [this r]
         (doto (Thread. r)
           (.setName (str prefix (swap! counter inc)))
-          (.setDaemon true)
-          (.start))))))
+          (.setDaemon true))))))
 
 (defonce poller-pool
   (delay (Executors/newScheduledThreadPool 8 stavka-poller-thread-factory)))
@@ -18,14 +17,14 @@
 (defrecord PollingUpdater [interval-ms state reload-fn]
   sp/Updater
   (start! [this]
-    (let [future (.scheduleAtFixedDelay @poller-pool
-                                        (cast Runnable (fn []
-                                                         (try
-                                                           (reload-fn)
-                                                           (catch Throwable _))))
-                                        interval-ms
-                                        interval-ms
-                                        TimeUnit/SECONDS)]
+    (let [future (.scheduleWithFixedDelay @poller-pool
+                                          (cast Runnable (fn []
+                                                           (try
+                                                             (reload-fn)
+                                                             (catch Throwable _))))
+                                          interval-ms
+                                          interval-ms
+                                          TimeUnit/MILLISECONDS)]
       (swap! (.-state this) assoc :future future)))
   (stop! [this]
     (when-let [future (:future @(.-state this))]

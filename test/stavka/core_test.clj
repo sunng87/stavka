@@ -65,3 +65,18 @@
           (stop-updaters! conf))
         (finally
           (io/delete-file path))))))
+
+(deftest test-poller-updater
+  (testing "poll a file for changes"
+    (let [path "./target/poll-test.json"]
+      (try
+        (spit path (che/generate-string {:test 1}))
+        (let [conf (using (json (poll (file path) 200)))]
+          (is (= 1 ($ conf :test)))
+          (spit path (che/generate-string {:test 2}))
+          (Thread/sleep 500)
+          (is (= 2 ($ conf :test)))
+
+          (stop-updaters! conf))
+        (finally
+          (io/delete-file path))))))
