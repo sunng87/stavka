@@ -80,3 +80,11 @@
           (stop-updaters! conf))
         (finally
           (io/delete-file path))))))
+
+(deftest test-convertors
+  (let [conf (using (properties (classpath "/test.properties")))]
+    (is (= "1" ($ conf :some.config)))
+    (is (= 1 ($l conf :some.config)))
+    (is (= 1.0 ($f conf :some.config)))
+    (is (= "1" ($s conf :some.config)))
+    (is (= false ($bool conf :some.config)))))

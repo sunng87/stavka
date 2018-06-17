@@ -114,6 +114,46 @@
             first)
        default-value)))
 
+(defn $l
+  "Get configuration as long"
+  ([key] (when-let [holders @global-config]
+           ($l holders key)))
+  ([holders key] ($l holders key nil))
+  ([holders key default-value]
+   (if-let [c ($ holders key)]
+     (Long/valueOf c)
+     (or default-value 0))))
+
+(defn $f
+  "Get configuration as double"
+  ([key] (when-let [holders @global-config]
+           ($f holders key)))
+  ([holders key] ($f holders key nil))
+  ([holders key default-value]
+   (if-let [c ($ holders key)]
+     (Double/valueOf c)
+     (or default-value 0))))
+
+(defn $s
+  "Get configuration as double"
+  ([key] (when-let [holders @global-config]
+           ($s holders key)))
+  ([holders key] ($s holders key nil))
+  ([holders key default-value]
+   (if-let [c ($ holders key)]
+     (str c)
+     default-value)))
+
+(defn $bool
+  "Get configuration as double"
+  ([key] (when-let [holders @global-config]
+           ($bool holders key)))
+  ([holders key] ($bool holders key nil))
+  ([holders key default-value]
+   (if-let [c ($ holders key)]
+     (Boolean/valueOf c)
+     (or default-value false))))
+
 (defn stop-updaters!
   ([] (when-let [holders @global-config]
         (stop-updaters! holders)))
