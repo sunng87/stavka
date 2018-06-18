@@ -10,7 +10,7 @@
                  [hawk "0.2.11"]]
   :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.11.1" :scope "test"]]
                    :jvm-opts ["-Dstavka.test.attr=yes"]}}
-  :plugins [[lein-codox "0.9.5"]]
+  :plugins [[lein-codox "0.10.4"]]
   :codox {:output-path "target/codox"
           :source-uri "https://github.com/sunng87/stavka/blob/master/{filepath}#L{line}"
           :metadata {:doc/format :markdown}}
