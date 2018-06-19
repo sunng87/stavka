@@ -4,7 +4,9 @@
 
 (def default-http-options
   {:as :stream
-   :trace-redirects true})
+   :trace-redirects true
+   :socket-timeout 5000
+   :conn-timeout 5000})
 
 (defrecord UrlLoader [url http-options]
   sp/Source
