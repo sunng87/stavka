@@ -14,7 +14,7 @@
             [stavka.utils :as utils])
   (:import [java.util Properties]))
 
-(defrecord ConfigHolder [state source updater format resolver listeners])
+(defrecord ConfigHolder [state source updater format resolver])
 
 (defrecord UpdaterSourceHolder [source updater])
 
@@ -27,7 +27,6 @@
 (defn- load-from-source! [holder]
   (let [stream (sp/reload (.-source holder))
         result (sp/parse (.-format holder) stream)]
-    ;; TODO: trigger listener
     (reset! (.-state holder) result)))
 
 (defn holder-from-source
@@ -45,8 +44,7 @@
                               source
                               updater
                               format
-                              resolver
-                              [])]
+                              resolver)]
     (deliver holder-ref holder)
     (load-from-source! holder)
     (when updater
@@ -57,12 +55,12 @@
 (defn env
   "Environment variables as configuration source."
   [& {:as options}]
-  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options) []))
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options)))
 
 (defn options
   "JVM option as configuration source."
   []
-  (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) []))
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver)))
 
 (defn json
   "JSON configuration from some source"
