@@ -97,6 +97,30 @@
           (Thread/sleep 200)
           (is (= 2 ($ conf :test.config))))
         (finally
+          (rj9a/stop-server server)))))
+  (testing "listeners"
+    (let [port 30001
+          temp-url (format "http://localhost:%d/" port)
+          counter (atom 0)
+          server-fn (fn [req]
+                      (case (swap! counter inc)
+                        1 {:body (che/generate-string {:test {:config 1}})}
+                        2 {:status 500 :body "Expected error"}
+                        {:body (che/generate-string {:test {:config 2}})}))
+          server (rj9a/run-jetty server-fn
+                                 {:port port :join? false})]
+      (try
+        (let [conf (using (json (poll (url temp-url) 50)))
+              listener-called (atom false)]
+          (on-change! conf :test.config (fn [current-value previous-value]
+                                          (reset! listener-called true)
+                                          (is (= current-value 2))
+                                          (is (= previous-value 1))))
+          (is (= 1 ($ conf :test.config)))
+          (Thread/sleep 200)
+          (is (= 2 ($ conf :test.config)))
+          (is @listener-called))
+        (finally
           (rj9a/stop-server server))))))
 
 (deftest test-convertors

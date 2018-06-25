@@ -14,7 +14,15 @@
             [stavka.utils :as utils])
   (:import [java.util Properties]))
 
-(defrecord ConfigHolder [state source updater format resolver])
+(defrecord ConfigHolder [state source updater format resolver parent])
+
+(defrecord ConfigHolders [holders listeners])
+
+(defn config-holders [holders-coll]
+  (let [holders (ConfigHolders. holders-coll (atom []))]
+    (doseq [h holders-coll]
+      (reset! (.-parent h) holders))
+    holders))
 
 (defrecord UpdaterSourceHolder [source updater])
 
@@ -23,11 +31,23 @@
 (utils/import-var url stavka.sources.url/url)
 (utils/import-var classpath stavka.sources.file/classpath)
 
+(declare $)
+
 ;; helper
-(defn- load-from-source! [holder]
+(defn- load-from-source! [holder reload?]
   (let [stream (sp/reload (.-source holder))
         result (sp/parse (.-format holder) stream)]
-    (reset! (.-state holder) result)))
+    (if reload?
+      (when-let [parent @(.parent holder)]
+        (let [listeners @(.-listeners parent)
+              interested (mapv #($ parent (:key %)) listeners)]
+          (reset! (.-state holder) result)
+          (let [updated-intereseted (mapv #($ parent (:key %)) listeners)]
+            (doseq [[{config-key :key callback :callback} p c] (map list listeners interested updated-intereseted)]
+              (when (not= p c)
+                (callback c p))))))
+      (do
+        (reset! (.-state holder) result)))))
 
 (defn holder-from-source
   "Create a holder from source readable source, useful when creating your own
@@ -39,14 +59,15 @@
         holder-ref (promise)
         updater (when updater-factory
                   (updater-factory #(when-let [inner @holder-ref]
-                                      (load-from-source! inner))))
+                                      (load-from-source! inner true))))
         holder (ConfigHolder. (atom initial-state)
                               source
                               updater
                               format
-                              resolver)]
+                              resolver
+                              (atom nil))]
     (deliver holder-ref holder)
-    (load-from-source! holder)
+    (load-from-source! holder false)
     (when updater
       (sp/start! updater))
     holder))
@@ -55,12 +76,12 @@
 (defn env
   "Environment variables as configuration source."
   [& {:as options}]
-  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options)))
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options) (atom nil)))
 
 (defn options
   "JVM option as configuration source."
   []
-  (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver)))
+  (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) (atom nil)))
 
 (defn json
   "JSON configuration from some source"
@@ -90,7 +111,7 @@
 (defmacro using
   "Put your configuration sources inside to create a configuration store."
   [& holders]
-  `(reverse (vector ~@holders)))
+  `(config-holders (reverse (vector ~@holders))))
 
 (defonce global-config (atom nil))
 
@@ -106,7 +127,7 @@
            ($ holders key)))
   ([holders key] ($ holders key nil))
   ([holders key default-value]
-   (or (->> holders
+   (or (->> (.-holders holders)
             (map #(sp/resolve (.-resolver %) (utils/deref-safe (.-state %)) (name key)))
             (filter some?)
             first)
@@ -153,8 +174,18 @@
      (or default-value false))))
 
 (defn stop-updaters!
+  "Stop updater associated with holders."
   ([] (when-let [holders @global-config]
         (stop-updaters! holders)))
-  ([holders] (doseq [h holders]
+  ([holders] (doseq [h (.-holders holders)]
                (when-let [updater (.-updater h)]
                  (sp/stop! updater)))))
+
+(defn on-change!
+  "Register a listener on configuration change"
+  ([config-key callback]
+   (when-let [holders @global-config]
+     (on-change! holders config-key callback)))
+  ([holders config-key callback]
+   (swap! (.-listeners holders) conj {:key config-key
+                                      :callback callback})))
