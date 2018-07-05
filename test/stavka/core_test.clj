@@ -9,6 +9,7 @@
   (testing "get config from environment"
     (let [conf (using (env))]
       (is (some? ($ conf :user)))
+      (is (some? ($ conf :lein.java.cmd)))
       (is (= :a ($ conf :some.env.that.never.exists :a)))))
   (testing "get json config from classpath or file"
     (let [conf (using (json (classpath "/test.json")))]
@@ -130,3 +131,7 @@
     (is (= 1.0 ($f conf :some.config)))
     (is (= "1" ($s conf :some.config)))
     (is (= false ($bool conf :some.config)))))
+
+(deftest test-env-no-transform
+  (let [conf (using (env :disable-underscore-to-dot? true))]
+    (is (some? ($ conf :lein_java_cmd)))))

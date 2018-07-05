@@ -74,7 +74,10 @@
 
 ;; resolvers
 (defn env
-  "Environment variables as configuration source."
+  "Environment variables as configuration source. Environment variable key is
+  lowercased and had `_` replaced by `.`.
+  Options:
+  `:disable-underscore-to-dot?` disabling transforming underscore to dot"
   [& {:as options}]
   (ConfigHolder. nil nil nil nil (stavka.resolvers.env/resolver options) (atom nil)))
 

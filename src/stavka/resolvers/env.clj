@@ -2,8 +2,17 @@
   (:require [stavka.protocols :as sp]
             [clojure.string :as str]))
 
-(defn transform-env-key [m options]
-  (into {} (map #(vector (str/lower-case (key %)) (val %)) m)))
+(defn- transform-env-key [k {:keys [disable-underscore-to-dot?]}]
+  (as-> k k*
+    (str/lower-case k*)
+    (if-not disable-underscore-to-dot?
+      (str/replace k* #"_" ".")
+      k*)))
+
+(defn transform-env-keys [m options]
+  (into {} (map #(vector (transform-env-key (key %) options)
+                         (val %))
+                m)))
 
 (defrecord EnvironmentVariableResolver [envs]
   sp/Resolver
@@ -11,4 +20,4 @@
     (envs key)))
 
 (defn resolver [options]
-  (EnvironmentVariableResolver. (transform-env-key (System/getenv) options)))
+  (EnvironmentVariableResolver. (transform-env-keys (System/getenv) options)))
