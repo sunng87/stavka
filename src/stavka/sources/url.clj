@@ -8,14 +8,18 @@
    :socket-timeout 5000
    :conn-timeout 5000})
 
-(defrecord UrlLoader [url http-options]
+(defrecord UrlLoader [url options]
   sp/Source
   (reload [this]
-    (-> url
-        (httpc/get (merge default-http-options http-options))
-        :body)))
+    (let [quiet? (:quiet? options)]
+      (try
+        (-> url
+            (httpc/get (merge default-http-options options))
+            :body)
+        (catch Throwable e
+          (when-not quiet? (throw e)))))))
 
 (defn url
   "returns a url loader"
-  ([the-url] (url the-url {}))
-  ([the-url http-opts] (UrlLoader. the-url http-opts)))
+  [the-url & {:as options}]
+  (UrlLoader. the-url options))

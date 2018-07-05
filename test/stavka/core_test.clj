@@ -23,7 +23,7 @@
       (is (= "1" ($ conf :some.config)))
       (is (= :none ($ conf :some.env.that.never.exists :none)))))
   (testing "test json config from url"
-    (let [port 30001
+    (let [port 30000
           temp-url (format "http://localhost:%d/" port)
           remote-config (che/generate-string {:server "jetty9"})
           server (rj9a/run-jetty (constantly {:body remote-config})
@@ -100,7 +100,7 @@
         (finally
           (rj9a/stop-server server)))))
   (testing "listeners"
-    (let [port 30001
+    (let [port 30002
           temp-url (format "http://localhost:%d/" port)
           counter (atom 0)
           server-fn (fn [req]
@@ -135,3 +135,21 @@
 (deftest test-env-no-transform
   (let [conf (using (env :disable-underscore-to-dot? true))]
     (is (some? ($ conf :lein_java_cmd)))))
+
+(deftest test-loader-option
+  (testing "the quiet? option that ignore errors in loading from source"
+    (try
+      (using (json (url "http://localhost:1111")))
+      (is false)
+      (catch Exception e
+        (is true)))
+    (is (some? (using (json (url "http://localhost:1111" :quiet? true)))))
+
+    (try
+      (using (json (file "not-exists.json")))
+      (is false)
+      (catch Exception e
+        (is true)))
+    (is (some? (using (json (file "not-exists.json" :quiet? true)))))
+
+    (is (some? (using (json (classpath "/not-exists.json" :quiet? true)))))))

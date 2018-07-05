@@ -35,19 +35,21 @@
 
 ;; helper
 (defn- load-from-source! [holder reload?]
-  (let [stream (sp/reload (.-source holder))
-        result (sp/parse (.-format holder) stream)]
-    (if reload?
-      (when-let [parent @(.parent holder)]
-        (let [listeners @(.-listeners parent)
-              interested (mapv #($ parent (:key %)) listeners)]
-          (reset! (.-state holder) result)
-          (let [updated-intereseted (mapv #($ parent (:key %)) listeners)]
-            (doseq [[{config-key :key callback :callback} p c] (map list listeners interested updated-intereseted)]
-              (when (not= p c)
-                (callback c p))))))
-      (do
-        (reset! (.-state holder) result)))))
+  (when-let [stream (sp/reload (.-source holder))]
+    (let [result (sp/parse (.-format holder) stream)]
+      (if reload?
+        (when-let [parent @(.parent holder)]
+          (let [listeners @(.-listeners parent)
+                interested (mapv #($ parent (:key %)) listeners)]
+            (reset! (.-state holder) result)
+            (let [updated-intereseted (mapv #($ parent (:key %)) listeners)]
+              ;; check all monitored keys
+              (doseq [[{config-key :key callback :callback} p c] (map list listeners interested updated-intereseted)]
+                ;; value changed, trigger callback
+                (when (not= p c)
+                  (callback c p))))))
+        (do
+          (reset! (.-state holder) result))))))
 
 (defn holder-from-source
   "Create a holder from source readable source, useful when creating your own
