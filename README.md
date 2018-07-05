@@ -8,14 +8,40 @@
 Stavka (Ставка) is the high command of your clojure application,
 which manages configuration from various sources.
 
-This project is still a work in progress. Not all APIs were implemented.
+## Features
+
+* Extensible configuration sources and formats
+  * Sources:
+    * Classpath `(classpath)`
+    * File system `(file)`
+    * URL `(url)`
+    * JDBC (to be provided as example of extending stavka)
+  * Formats:
+    * Environment variables `(env)`
+    * JVM options (-D) `(options)`
+    * JSON `(json)`
+    * YAML `(yaml)`
+    * Properties `(property)`
+* Reloading by
+  * Watching file system `(watch)`
+  * Polling the source `(poll)`
+  * JMX (TODO)
+* Listeners for source changing `(on-change!)`
+* Type conversion `($l) ($f) ($b) ($s)`
+
 
 ## Usage
+
+Use stavka with [component](https://github.com/stuartsierra/component)
+or [mount](https://github.com/tolitius/mount). You can have multiple
+config instance and manage life-cycle of updater.
 
 ```clj
 (require '[stavka.core :as sta :refer :all])
 
-(def config
+;; Use stavka with mount
+(defstate config
+    :start
     ;; load configuration from multiple sources and merge them like
     ;; clojure.core/merge.
     (sta/using
@@ -27,32 +53,58 @@ This project is still a work in progress. Not all APIs were implemented.
         (properties (watch (file "/etc/stavka.properties")))
         ;; and fetch a remote json configuration. check every 10 seconds
         ;; for update.
-        (json (poll (url "http://somehost/configuration/my.json") 10000))))
+        (json (poll (url "http://somehost/configuration/my.json") 10000)))
 
-;; get configuration
-($ config :some.config.key)
+    :stop (stop-updaters! config))
+
+;; Use stavka with component
+(defrecord StavkaConfiguration [config]
+    component/Lifecycle
+    (start [component]
+        (assoc component :config
+            (sta/using
+                (env)
+                (properties (classpath "/default.properties"))
+                (properties (watch (file "/etc/stavka.properties")))
+                (json (poll (url "http://somehost/configuration/my.json") 10000)))))
+    (stop [component]
+        (stop-updaters! config)
+        (assoc component :config nil)))
 ```
 
-## Features
+Get configuration item:
 
-* Extensible configuration sources and formats
-  * Sources:
-    * Classpath
-    * File system
-    * URL
-    * JDBC (to be provided as example of extending stavka)
-  * Formats:
-    * Environment variables
-    * JVM options (-D)
-    * JSON
-    * YAML
-    * Properties
-* Reloading by
-  * Watching file system
-  * Polling the source
-  * JMX
-* Listeners for source changing
-* Type conversion
+```clj
+;; get configuration
+($ config :some.config.key)
+
+;; get configuration with type convertion
+;; $l: as long
+;; $f: as double
+;; $s: as string
+;; $b: as boolean
+($l config :some.config.key)
+```
+
+And you can still use stavka globally:
+
+```clj
+(sta/global
+    (env)
+    (properties (classpath "/default.properties"))
+    (properties (watch (file "/etc/stavka.properties")))
+    (json (poll (url "http://somehost/configuration/my.json") 10000)))
+
+($l :some.config.key)
+```
+
+Add change listener on some key when you have updater configured:
+
+```clj
+(on-change! config :some.config.key
+    (fn [new-value previous-value]
+        ))
+```
 
 ## License
 
