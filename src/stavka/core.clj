@@ -168,11 +168,11 @@
      (str c)
      default-value)))
 
-(defn $bool
+(defn $b
   "Get configuration as double"
   ([key] (when-let [holders @global-config]
-           ($bool holders key)))
-  ([holders key] ($bool holders key nil))
+           ($b holders key)))
+  ([holders key] ($b holders key nil))
   ([holders key default-value]
    (if-let [c ($ holders key)]
      (Boolean/valueOf c)

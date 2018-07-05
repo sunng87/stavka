@@ -104,6 +104,7 @@
           temp-url (format "http://localhost:%d/" port)
           counter (atom 0)
           server-fn (fn [req]
+
                       (case (swap! counter inc)
                         1 {:body (che/generate-string {:test {:config 1}})}
                         2 {:status 500 :body "Expected error"}
@@ -130,7 +131,7 @@
     (is (= 1 ($l conf :some.config)))
     (is (= 1.0 ($f conf :some.config)))
     (is (= "1" ($s conf :some.config)))
-    (is (= false ($bool conf :some.config)))))
+    (is (= false ($b conf :some.config)))))
 
 (deftest test-env-no-transform
   (let [conf (using (env :disable-underscore-to-dot? true))]
