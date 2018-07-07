@@ -89,7 +89,7 @@ Get configuration item:
 And you can still use stavka globally:
 
 ```clj
-(sta/global
+(sta/global!
     (env)
     (properties (classpath "/default.properties"))
     (properties (watch (file "/etc/stavka.properties")))
