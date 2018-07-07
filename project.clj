@@ -9,7 +9,10 @@
                  [clj-http "3.9.0"]
                  [hawk "0.2.11"]]
   :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.11.1" :scope "test"]]
-                   :jvm-opts ["-Dstavka.test.attr=yes"]}}
+                   :jvm-opts ["-Dstavka.test.attr=yes"]}
+             :example {:dependencies [[org.clojure/java.jdbc "0.7.7"]
+                                      [org.hsqldb/hsqldb "2.4.1"]]
+                       :source-paths ["examples"]}}
   :plugins [[lein-codox "0.10.4"]]
   :codox {:output-path "target/codox"
           :source-uri "https://github.com/sunng87/stavka/blob/master/{filepath}#L{line}"
