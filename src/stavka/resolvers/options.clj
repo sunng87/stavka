@@ -4,7 +4,8 @@
 (defrecord JavaOptionResolver []
   sp/Resolver
   (resolve [_ _ key]
-    (System/getProperty key)))
+    (System/getProperty key))
+  (initial-state [_] nil))
 
 (def instance (JavaOptionResolver.))
 

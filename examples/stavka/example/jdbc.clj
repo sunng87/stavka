@@ -19,7 +19,7 @@
 
 ;; an example on extending stavka sources
 (defn jdbc [db-spec]
-  (s/holder-from-source (db-source db-spec) {}
+  (s/holder-from-source (db-source db-spec)
                         (stavka.formats.none/the-format)
                         (stavka.resolvers.flatdict/resolver)))
 

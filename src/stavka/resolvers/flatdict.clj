@@ -5,7 +5,8 @@
 (defrecord FlatDictionaryResolver []
   sp/Resolver
   (resolve [this dict k]
-    (dict k)))
+    (dict k))
+  (initial-state [this] {}))
 
 (def instance (FlatDictionaryResolver.))
 

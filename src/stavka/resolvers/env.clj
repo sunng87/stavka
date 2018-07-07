@@ -17,7 +17,9 @@
 (defrecord EnvironmentVariableResolver [envs]
   sp/Resolver
   (resolve [_ _ key]
-    (envs key)))
+    (envs key))
+  (initial-state [_]
+    nil))
 
 (defn resolver [options]
   (EnvironmentVariableResolver. (transform-env-keys (System/getenv) options)))

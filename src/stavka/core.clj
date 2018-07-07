@@ -11,8 +11,7 @@
             [stavka.formats.json]
             [stavka.formats.yaml]
             [stavka.formats.properties]
-            [stavka.utils :as utils])
-  (:import [java.util Properties]))
+            [stavka.utils :as utils]))
 
 (defrecord ConfigHolder [state source updater format resolver parent])
 
@@ -54,7 +53,7 @@
 (defn holder-from-source
   "Create a holder from source readable source, useful when creating your own
   configuration format"
-  [source initial-state format resolver]
+  [source format resolver]
   (let [[source updater-factory] (if (vector? source)
                                    source
                                    [source nil])
@@ -62,7 +61,7 @@
         updater (when updater-factory
                   (updater-factory #(when-let [inner @holder-ref]
                                       (load-from-source! inner true))))
-        holder (ConfigHolder. (atom initial-state)
+        holder (ConfigHolder. (atom (sp/initial-state resolver))
                               source
                               updater
                               format
@@ -91,21 +90,21 @@
 (defn json
   "JSON configuration from some source"
   [source]
-  (holder-from-source source {}
+  (holder-from-source source
                       (stavka.formats.json/the-format)
                       (stavka.resolvers.dict/resolver)))
 
 (defn properties
   "java.util.Properties from some source"
   [source]
-  (holder-from-source source (Properties.)
+  (holder-from-source source
                       (stavka.formats.properties/the-format)
                       (stavka.resolvers.properties/resolver)))
 
 (defn yaml
   "YAML configuration from source source"
   [source]
-  (holder-from-source source {}
+  (holder-from-source source
                       (stavka.formats.yaml/the-format)
                       (stavka.resolvers.dict/resolver)))
 
