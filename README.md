@@ -15,7 +15,7 @@ which manages configuration from various sources.
     * Classpath `(classpath)`
     * File system `(file)`
     * URL `(url)`
-    * JDBC (see examples)
+    * JDBC (see [examples](https://github.com/sunng87/stavka/blob/master/examples/stavka/example/jdbc.clj))
   * Formats:
     * Environment variables `(env)`
     * JVM options (-D) `(options)`
