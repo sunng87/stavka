@@ -9,4 +9,6 @@
 
 (def instance (JavaOptionResolver.))
 
-(defn resolver [] instance)
+(defn resolver
+  "Resolve key from JVM options."
+  [] instance)

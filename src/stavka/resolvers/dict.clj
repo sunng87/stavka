@@ -11,4 +11,6 @@
 
 (def instance (DictionaryResolver.))
 
-(defn resolver [] instance)
+(defn resolver
+  "Hierarchical dictionary resolver. The key is split by `.` and resolved in each level of dictionary."
+  [] instance)

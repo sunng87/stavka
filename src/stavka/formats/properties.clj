@@ -10,4 +10,6 @@
 
 (def instance (PropertiesFormat.))
 
-(defn the-format [] instance)
+(defn the-format
+  "Parse input-stream as Java properties"
+  [] instance)

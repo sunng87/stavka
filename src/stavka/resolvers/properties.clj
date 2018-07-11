@@ -11,4 +11,6 @@
 
 (def instance (PropertiesResolver.))
 
-(defn resolver [] instance)
+(defn resolver
+  "Resolve java Properties"
+  [] instance)

@@ -7,4 +7,6 @@
 
 (def instance (NoneFormat.))
 
-(defn the-format [] instance)
+(defn the-format
+  "The nil format used when the source has no format at all."
+  [] instance)

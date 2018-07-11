@@ -10,4 +10,6 @@
 
 (def instance (JsonFormat.))
 
-(defn the-format [] instance)
+(defn the-format
+  "Deserialize input-stream as JSON to map"
+  [] instance)

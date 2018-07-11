@@ -21,5 +21,7 @@
   (initial-state [_]
     nil))
 
-(defn resolver [options]
+(defn resolver
+  "Resolve key from environment variables."
+  [options]
   (EnvironmentVariableResolver. (transform-env-keys (System/getenv) options)))

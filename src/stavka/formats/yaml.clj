@@ -10,4 +10,6 @@
 
 (def instance (YamlFormat.))
 
-(defn the-format [] instance)
+(defn the-format
+  "Deserialize input-stream as Yaml to map"
+  [] instance)

@@ -10,4 +10,6 @@
 
 (def instance (FlatDictionaryResolver.))
 
-(defn resolver [] instance)
+(defn resolver
+  "Flat dictionary resolver. Get the value via key directly."
+  [] instance)
