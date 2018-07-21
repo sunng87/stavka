@@ -25,8 +25,7 @@ which manages configuration from various sources.
 * Reloading by
   * Watching file system `(watch)`
   * Polling the source `(poll)`
-  * JMX (TODO)
-* Listeners for source changing `(on-change!)`
+* Listeners for value changing `(on-change!)`
 * Type conversion `($l) ($f) ($b) ($s)`
 
 
