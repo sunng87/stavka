@@ -31,6 +31,8 @@ which manages configuration from various sources.
 
 ## Usage
 
+### Setup
+
 Use stavka with [component](https://github.com/stuartsierra/component)
 or [mount](https://github.com/tolitius/mount). You can have multiple
 config instance and manage life-cycle of updater.
@@ -71,7 +73,36 @@ config instance and manage life-cycle of updater.
         (assoc component :config nil)))
 ```
 
-Get configuration item:
+### Configuration file format:
+
+#### JSON
+
+```javascript
+{
+  "some": {
+    "config": {
+      "key" : "some-value"
+    }
+  }
+}
+
+```
+
+#### Properties
+
+```properties
+some.config.key=some-value
+```
+
+#### Yaml
+
+```yaml
+some:
+  config:
+    key: some-value
+```
+
+### Get configuration item:
 
 ```clj
 ;; get configuration
@@ -85,6 +116,8 @@ Get configuration item:
 ($l config :some.config.key)
 ```
 
+### Global config
+
 And you can still use stavka globally:
 
 ```clj
@@ -96,6 +129,8 @@ And you can still use stavka globally:
 
 ($l :some.config.key)
 ```
+
+### Listeners
 
 Add change listener on some key when you have updater configured:
 
