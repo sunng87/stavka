@@ -39,6 +39,10 @@
     (let [conf (using (yaml (classpath "/test.yaml")))]
       (is (= "127.0.0.1" ($ conf :spring.datasource.host)))
       (is (= 3306 ($ conf :spring.datasource.port)))))
+  (testing "get edn"
+    (let [conf (using (edn (classpath "/test.edn")))]
+      (is (= 1 ($ conf :object.child)))
+      (is (= ["c0"] ($ conf :array)))))
   (testing "get from jvm options"
     (let [conf (using (options))]
       (is (= "yes" ($ conf :stavka.test.attr)))))

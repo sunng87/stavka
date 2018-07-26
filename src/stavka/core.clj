@@ -9,6 +9,7 @@
             [stavka.updaters.watcher]
             [stavka.updaters.poller]
             [stavka.formats.json]
+            [stavka.formats.edn]
             [stavka.formats.yaml]
             [stavka.formats.properties]
             [stavka.utils :as utils]))
@@ -92,6 +93,13 @@
   [source]
   (holder-from-source source
                       (stavka.formats.json/the-format)
+                      (stavka.resolvers.dict/resolver)))
+
+(defn edn
+  "EDN configuration from some source"
+  [source]
+  (holder-from-source source
+                      (stavka.formats.edn/the-format)
                       (stavka.resolvers.dict/resolver)))
 
 (defn properties
