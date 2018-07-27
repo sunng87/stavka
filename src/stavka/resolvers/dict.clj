@@ -6,7 +6,8 @@
   sp/Resolver
   (resolve [this dict key]
     (let [key-path (str/split key #"\.")]
-      (get-in dict key-path)))
+      (or (get-in dict key-path)
+          (get-in dict (map keyword key-path)))))
   (initial-state [this] {}))
 
 (def instance (DictionaryResolver.))
