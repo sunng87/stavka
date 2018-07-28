@@ -19,6 +19,7 @@ which manages configuration from various sources.
   * Formats:
     * Environment variables `(env)`
     * JVM options (-D) `(options)`
+    * EDN `(edn)`
     * JSON `(json)`
     * YAML `(yaml)`
     * Properties `(property)`
@@ -49,7 +50,7 @@ config instance and manage life-cycle of updater.
         ;; using environment variables by default
         (env)
         ;; also load properties from classpath
-        (properties (classpath "/default.properties"))
+        (edn (classpath "/default.edn"))
         ;; load another properties from filesystem, and watch is for change
         (properties (watch (file "/etc/stavka.properties")))
         ;; and fetch a remote json configuration. check every 10 seconds
@@ -65,7 +66,7 @@ config instance and manage life-cycle of updater.
         (assoc component :config
             (sta/using
                 (env)
-                (properties (classpath "/default.properties"))
+                (edn (classpath "/default.edn"))
                 (properties (watch (file "/etc/stavka.properties")))
                 (json (poll (url "http://somehost/configuration/my.json") 10000)))))
     (stop [component]
@@ -74,6 +75,12 @@ config instance and manage life-cycle of updater.
 ```
 
 ### Configuration file format:
+
+#### EDN
+
+```clojure
+{:some {:config {:key "some-value"}}}
+```
 
 #### JSON
 
@@ -123,7 +130,7 @@ And you can still use stavka globally:
 ```clj
 (sta/global!
     (env)
-    (properties (classpath "/default.properties"))
+    (edn (classpath "/default.edn"))
     (properties (watch (file "/etc/stavka.properties")))
     (json (poll (url "http://somehost/configuration/my.json") 10000)))
 
