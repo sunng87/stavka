@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sunng87/stavka.png?branch=master)](https://travis-ci.org/sunng87/stavka)
 [![Clojars](https://img.shields.io/clojars/v/stavka.svg)](https://clojars.org/stavka)
+[![Cljdoc](https://img.shields.io/badge/cljdoc-stavka-blue.svg)](https://cljdoc.xyz/d/stavka/stavka)
 [![License](https://img.shields.io/badge/license-eclipse-blue.svg)](https://github.com/sunng87/stavka/blob/master/LICENSE)
 [![Donate](https://img.shields.io/badge/donate-liberapay-yellow.svg)](https://liberapay.com/Sunng/donate)
 
