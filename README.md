@@ -17,6 +17,7 @@ which manages configuration from various sources.
     * File system `(file)`
     * URL `(url)`
     * JDBC (see [examples](https://github.com/sunng87/stavka/blob/master/examples/stavka/example/jdbc.clj))
+    * Kubernetes configmap (see [examples](https://github.com/sunng87/stavka/blob/master/examples/stavka/example/kubernetes.clj))
   * Formats:
     * Environment variables `(env)`
     * JVM options (-D) `(options)`

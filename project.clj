@@ -10,8 +10,11 @@
                  [hawk "0.2.11"]]
   :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.11.1" :scope "test"]]
                    :jvm-opts ["-Dstavka.test.attr=yes"]}
-             :example {:dependencies [[org.clojure/java.jdbc "0.7.7"]
-                                      [org.hsqldb/hsqldb "2.4.1"]]
+             :example {:dependencies [;; jdbc
+                                      [org.clojure/java.jdbc "0.7.7"]
+                                      [org.hsqldb/hsqldb "2.4.1"]
+                                      ;; kubernetes
+                                      [io.fabric8/kubernetes-client "4.0.3"]]
                        :source-paths ["examples"]}}
   :plugins [[lein-codox "0.10.4"]]
   :codox {:output-path "target/codox"
