@@ -51,7 +51,7 @@ config instance and manage life-cycle of updater.
     (sta/using
         ;; using environment variables by default
         (env)
-        ;; also load properties from classpath
+        ;; also load edn from classpath
         (edn (classpath "/default.edn"))
         ;; load another properties from filesystem, and watch is for change
         (properties (watch (file "/etc/stavka.properties")))
