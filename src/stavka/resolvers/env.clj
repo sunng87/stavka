@@ -10,9 +10,12 @@
       k*)))
 
 (defn transform-env-keys [m options]
-  (into {} (map #(vector (transform-env-key (key %) options)
-                         (val %))
-                m)))
+  (let [prefix (:prefix options "")]
+    (->> m
+         (filter #(str/starts-with? (key %) prefix))
+         (map #(vector (transform-env-key (subs (key %) (count prefix)) options)
+                       (val %)))
+         (into {}))))
 
 (defrecord EnvironmentVariableResolver [envs]
   sp/Resolver
