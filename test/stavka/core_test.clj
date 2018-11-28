@@ -11,6 +11,9 @@
       (is (some? ($ conf :user)))
       (is (some? ($ conf :lein.java.cmd)))
       (is (= :a ($ conf :some.env.that.never.exists :a)))))
+  (testing "environment with prefix"
+    (let [conf (using (env :prefix "US"))]
+      (is (some? ($ conf :er)))))
   (testing "get json config from classpath or file"
     (let [conf (using (json (classpath "/test.json")))]
       (is (= 1 ($ conf :object.child)))
