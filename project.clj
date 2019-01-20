@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [cheshire "5.8.0"]
-                 [circleci/clj-yaml "0.5.6"]
+                 [clj-commons/clj-yaml "0.6.0"]
                  [clj-http "3.9.0"]
                  [hawk "0.2.11"]]
   :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.11.1" :scope "test"]]
