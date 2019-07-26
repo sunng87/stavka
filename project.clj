@@ -14,7 +14,9 @@
                                       [org.clojure/java.jdbc "0.7.8"]
                                       [org.hsqldb/hsqldb "2.4.1"]
                                       ;; kubernetes
-                                      [io.fabric8/kubernetes-client "4.1.1"]]
+                                      [io.fabric8/kubernetes-client "4.1.1"]
+                                      ;; vault
+                                      [amperity/vault-clj "0.7.0"]]
                        :source-paths ["examples"]}}
   :plugins [[lein-codox "0.10.4"]]
   :codox {:output-path "target/codox"
