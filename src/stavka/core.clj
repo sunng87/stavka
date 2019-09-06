@@ -166,7 +166,7 @@
      (or default-value 0))))
 
 (defn $s
-  "Get configuration as double"
+  "Get configuration as string"
   ([key] (when-let [holders @global-config]
            ($s holders key)))
   ([holders key] ($s holders key nil))
@@ -176,7 +176,7 @@
      default-value)))
 
 (defn $b
-  "Get configuration as double"
+  "Get configuration as boolean"
   ([key] (when-let [holders @global-config]
            ($b holders key)))
   ([holders key] ($b holders key nil))
