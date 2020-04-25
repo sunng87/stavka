@@ -4,19 +4,19 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [cheshire "5.8.1"]
-                 [clj-commons/clj-yaml "0.6.0"]
+                 [cheshire "5.10.0"]
+                 [clj-commons/clj-yaml "0.7.1"]
                  [clj-http "3.9.1"]
                  [hawk "0.2.11"]]
-  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.12.2" :scope "test"]]
+  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.12.7" :scope "test"]]
                    :jvm-opts ["-Dstavka.test.attr=yes"]}
              :example {:dependencies [;; jdbc
-                                      [org.clojure/java.jdbc "0.7.8"]
-                                      [org.hsqldb/hsqldb "2.4.1"]
+                                      [org.clojure/java.jdbc "0.7.11"]
+                                      [org.hsqldb/hsqldb "2.5.0"]
                                       ;; kubernetes
-                                      [io.fabric8/kubernetes-client "4.1.1"]
+                                      [io.fabric8/kubernetes-client "4.9.1"]
                                       ;; vault
-                                      [amperity/vault-clj "0.7.0"]]
+                                      [amperity/vault-clj "1.0.0"]]
                        :source-paths ["examples"]}}
   :plugins [[lein-codox "0.10.4"]]
   :codox {:output-path "target/codox"
