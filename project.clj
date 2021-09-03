@@ -14,7 +14,7 @@
                                       [org.clojure/java.jdbc "0.7.12"]
                                       [org.hsqldb/hsqldb "2.6.0"]
                                       ;; kubernetes
-                                      [io.fabric8/kubernetes-client "4.9.1"]
+                                      [io.fabric8/kubernetes-client "5.7.2"]
                                       ;; vault
                                       [amperity/vault-clj "1.0.6"]]
                        :source-paths ["examples"]}}
