@@ -8,7 +8,7 @@
             [stavka.sources.url]
             [stavka.updaters.watcher]
             [stavka.updaters.poller]
-            [stavka.formats.json]
+
             [stavka.formats.edn]
             [stavka.formats.yaml]
             [stavka.formats.properties]
@@ -88,12 +88,16 @@
   []
   (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) (atom nil)))
 
-(defn json
-  "JSON configuration from some source"
-  [source]
-  (holder-from-source source
-                      (stavka.formats.json/the-format)
-                      (stavka.resolvers.dict/resolver)))
+(utils/when-required
+ '[cheshire.core]
+
+ (require 'stavka.formats.json)
+ (let [fmt @(resolve 'stavka.formats.json/the-format)]
+   (defn json
+   "JSON configuration from some source"
+   [source]
+   (holder-from-source source (fmt)
+                       (stavka.resolvers.dict/resolver)))))
 
 (defn edn
   "EDN configuration from some source"
@@ -109,12 +113,17 @@
                       (stavka.formats.properties/the-format)
                       (stavka.resolvers.properties/resolver)))
 
-(defn yaml
-  "YAML configuration from source source"
-  [source]
-  (holder-from-source source
-                      (stavka.formats.yaml/the-format)
-                      (stavka.resolvers.dict/resolver)))
+(utils/when-required
+ '[clj-yaml.core :as yaml]
+
+  (require 'stavka.formats.json)
+  (let [fmt @(resolve 'stavka.formats.yaml/the-format)]
+    (defn yaml
+      "YAML configuration from source source"
+      [source]
+      (holder-from-source source fmt
+                          (stavka.resolvers.dict/resolver)))))
+
 
 ;; updaters
 (utils/import-var watch stavka.updaters.watcher/watch)

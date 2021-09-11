@@ -3,13 +3,14 @@
   :url "https://github.com/sunng87/stavka"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.10.3"]
-                 [cheshire "5.10.1"]
-                 [clj-commons/clj-yaml "0.7.107"]
-                 [clj-http "3.12.3"]
-                 [hawk "0.2.11"]]
-  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.15.2" :scope "test"]]
+  :dependencies [[org.clojure/clojure "1.10.3"]]
+  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.15.2" :scope "test"]
+                                  [cheshire "5.10.1"]
+                                  [clj-commons/clj-yaml "0.7.107"]
+                                  [clj-http "3.12.3"]
+                                  [hawk "0.2.11"]]
                    :jvm-opts ["-Dstavka.test.attr=yes"]}
+
              :example {:dependencies [;; jdbc
                                       [org.clojure/java.jdbc "0.7.12"]
                                       [org.hsqldb/hsqldb "2.6.0"]
