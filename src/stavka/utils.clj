@@ -8,18 +8,10 @@
 (defn deref-safe [s]
   (when s @s))
 
-(defmacro when-required [req & body]
+(defmacro if-provided [req positive-branch negative-branch]
   `(try
      (require ~req)
 
-     ~@body
+     ~positive-branch
      (catch java.io.FileNotFoundException e#
-         nil)))
-
-(defmacro when-imported [imp & body]
-  `(try
-     (import ~imp)
-
-     ~@body
-     (catch Exception e#
-         nil)))
+       ~negative-branch)))

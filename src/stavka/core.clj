@@ -5,12 +5,8 @@
             [stavka.resolvers.dict]
             [stavka.resolvers.properties]
             [stavka.sources.file]
-            [stavka.sources.url]
-            [stavka.updaters.watcher]
             [stavka.updaters.poller]
-
             [stavka.formats.edn]
-            [stavka.formats.yaml]
             [stavka.formats.properties]
             [stavka.utils :as utils]))
 
@@ -28,7 +24,21 @@
 
 ;; source loaders
 (utils/import-var file stavka.sources.file/file)
-(utils/import-var url stavka.sources.url/url)
+
+(utils/if-provided
+ 'clj-http.client
+
+ ;; when clj-http
+ (do
+   (require 'stavka.sources.url)
+   (let [the-url-source (resolve 'stavka.sources.url/url)]
+     (def url the-url-source)))
+
+ ;; otherwise throws exception
+ (defn url [_]
+   (throw (UnsupportedOperationException.
+           "clj-http not found on classpath. Url source is disbaled."))))
+
 (utils/import-var classpath stavka.sources.file/classpath)
 
 (declare $)
@@ -88,16 +98,23 @@
   []
   (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) (atom nil)))
 
-(utils/when-required
+(utils/if-provided
  '[cheshire.core]
 
- (require 'stavka.formats.json)
- (let [fmt @(resolve 'stavka.formats.json/the-format)]
-   (defn json
-   "JSON configuration from some source"
-   [source]
-   (holder-from-source source (fmt)
-                       (stavka.resolvers.dict/resolver)))))
+ ;; when cheshire is on classpath
+ (do
+   (require 'stavka.formats.json)
+   (let [fmt @(resolve 'stavka.formats.json/the-format)]
+     (defn json
+       "JSON configuration from some source"
+       [source]
+       (holder-from-source source (fmt)
+                           (stavka.resolvers.dict/resolver)))))
+
+ ;; else
+ (defn json [_]
+   (throw (UnsupportedOperationException.
+           "cheshire is not on classpath, json format disabled."))))
 
 (defn edn
   "EDN configuration from some source"
@@ -113,20 +130,40 @@
                       (stavka.formats.properties/the-format)
                       (stavka.resolvers.properties/resolver)))
 
-(utils/when-required
- '[clj-yaml.core :as yaml]
+(utils/if-provided
+ '[clj-yaml.core]
 
-  (require 'stavka.formats.json)
-  (let [fmt @(resolve 'stavka.formats.yaml/the-format)]
+ ;; clj-yaml provided
+ (do
+   (require 'stavka.formats.yaml)
+   (let [fmt @(resolve 'stavka.formats.yaml/the-format)]
     (defn yaml
       "YAML configuration from source source"
       [source]
-      (holder-from-source source fmt
+      (holder-from-source source (fmt)
                           (stavka.resolvers.dict/resolver)))))
+
+ ;; else
+ (defn yaml [_]
+   (throw (UnsupportedOperationException.
+           "clj-yaml is not on classpath, yaml format disabled."))))
 
 
 ;; updaters
-(utils/import-var watch stavka.updaters.watcher/watch)
+(utils/if-provided
+ 'hawk.core
+
+ ;; hawk is provided
+ (do
+   (require 'stavka.updaters.watcher)
+   (let [the-watcher (resolve 'stavka.updaters.watcher/watch)]
+     (def watch the-watcher)))
+
+ ;; otherwise disable fs watcher
+ (defn watch [_]
+   (throw (UnsupportedOperationException.
+           "hawk is not found on classpath, file system watching is disabled."))))
+
 (utils/import-var poll stavka.updaters.poller/poll)
 
 (defmacro using
