@@ -7,3 +7,11 @@
 
 (defn deref-safe [s]
   (when s @s))
+
+(defmacro if-provided [req positive-branch negative-branch]
+  `(try
+     (require ~req)
+
+     ~positive-branch
+     (catch java.io.FileNotFoundException e#
+       ~negative-branch)))

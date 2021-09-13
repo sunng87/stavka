@@ -15,18 +15,18 @@ which manages configuration from various sources.
   * Sources:
     * Classpath `(classpath)`
     * File system `(file)`
-    * URL `(url)`
+    * URL `(url)`, enabled when `clj-http` on classpath
     * JDBC (see [examples](https://github.com/sunng87/stavka/blob/master/examples/stavka/example/jdbc.clj))
     * Kubernetes configmap (see [examples](https://github.com/sunng87/stavka/blob/master/examples/stavka/example/kubernetes.clj))
   * Formats:
     * Environment variables `(env)`
     * JVM options (-D) `(options)`
     * EDN `(edn)`
-    * JSON `(json)`
-    * YAML `(yaml)`
+    * JSON `(json)`, enabled when `cheshire` on classpath
+    * YAML `(yaml)`, enabled when `clj-yaml` on classpath
     * Properties `(property)`
 * Reloading by
-  * Watching file system `(watch)`
+  * Watching file system `(watch)`, enabled when `hawk` on classpath
   * Polling the source `(poll)`
 * Listeners for value changing `(on-change!)`
 * Type conversion `($l) ($f) ($b) ($s)`
