@@ -9,5 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests
+    - name: Run default tests
       run: lein test
+    - name: Run minimal dependency tests
+      run: lein with-profiles minimal test
