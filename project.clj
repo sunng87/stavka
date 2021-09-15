@@ -1,4 +1,4 @@
-(defproject stavka "0.5.2-SNAPSHOT"
+(defproject stavka "0.6.0-SNAPSHOT"
   :description "Stavka manages configuration, for your clojure application"
   :url "https://github.com/sunng87/stavka"
   :license {:name "Eclipse Public License"
