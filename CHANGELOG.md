@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.7.0]
+
+### Added
+
+- Added global config accessor functions `$$`/`$$l`/`$$f`/`$$s`/`$$b`
+
+### Changed
+
+- Removed global config access capability from `$` function family
+- `$l`/`$f`/`$b` now returns nil when default value not provided,
+  instead of 0/0/false
+
 ## [0.6.0]
 
 ### Changed
