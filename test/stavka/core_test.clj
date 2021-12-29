@@ -54,10 +54,13 @@
       (is (= 1 ($ conf :object.child))))))
 
 (deftest test-global
+  (testing "no global config available"
+    (is (thrown? clojure.lang.ExceptionInfo ($$ :user))))
   (global! (env)
            (properties (classpath "/test.properties")))
-  (is (some? ($ :user)))
-  (is (= "1" ($ :some.config))))
+  (is (some? ($$ :user)))
+  (is (= "1" ($$ :some.config)))
+  (is (= 1 ($$l :some.config))))
 
 (deftest test-file-watch-updater
   (testing "create a file and watch for change"

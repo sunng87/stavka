@@ -136,7 +136,9 @@ And you can still use stavka globally:
     (properties (watch (file "/etc/stavka.properties")))
     (json (poll (url "http://somehost/configuration/my.json") 10000)))
 
-($l :some.config.key)
+;; use double-$ to access global config
+($$ :some.config.key)
+($$l :some.config.key)
 ```
 
 ### Listeners
