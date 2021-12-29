@@ -181,8 +181,6 @@
 
 (defn $
   "Get configuration item from store."
-  ([key] (when-let [holders @global-config]
-           ($ holders key)))
   ([holders key] ($ holders key nil))
   ([holders key default-value]
    (or (->> (.-holders holders)
@@ -191,45 +189,72 @@
             first)
        default-value)))
 
+(defn $$
+  "Get configuration item from the global store."
+  ([key] ($$ key nil))
+  ([key default-value]
+   (when-let [holders @global-config]
+     ($ holders key default-value))))
+
 (defn $l
   "Get configuration as long"
-  ([key] (when-let [holders @global-config]
-           ($l holders key)))
   ([holders key] ($l holders key nil))
   ([holders key default-value]
    (if-let [c ($ holders key)]
      (Long/valueOf c)
-     (or default-value 0))))
+     default-value)))
+
+(defn $$l
+  "Get configuration from the global store as long"
+  ([key] ($$l key nil))
+  ([key default-value]
+   (when-let [holders @global-config]
+     ($l holders key default-value))))
 
 (defn $f
   "Get configuration as double"
-  ([key] (when-let [holders @global-config]
-           ($f holders key)))
   ([holders key] ($f holders key nil))
   ([holders key default-value]
    (if-let [c ($ holders key)]
      (Double/valueOf c)
-     (or default-value 0))))
+     default-value)))
+
+(defn $$f
+  "Get configuration from the global store as double"
+  ([key] ($$f key nil))
+  ([key default-value]
+   (when-let [holders @global-config]
+     ($f holders key default-value))))
 
 (defn $s
   "Get configuration as string"
-  ([key] (when-let [holders @global-config]
-           ($s holders key)))
   ([holders key] ($s holders key nil))
   ([holders key default-value]
    (if-let [c ($ holders key)]
      (str c)
      default-value)))
 
+(defn $$s
+  "Get configuration from the global store as string"
+  ([key] ($$s key nil))
+  ([key default-value]
+   (when-let [holders @global-config]
+     ($s holders key default-value))))
+
 (defn $b
   "Get configuration as boolean"
-  ([key] (when-let [holders @global-config]
-           ($b holders key)))
   ([holders key] ($b holders key nil))
   ([holders key default-value]
    (if-let [c ($ holders key)]
      (Boolean/valueOf c)
-     (or default-value false))))
+     default-value)))
+
+(defn $$b
+  "Get configuration from the global store as boolean"
+  ([key] ($$b key nil))
+  ([key default-value]
+   (when-let [holders @global-config]
+     ($b holders key default-value))))
 
 (defn stop-updaters!
   "Stop updater associated with holders."
