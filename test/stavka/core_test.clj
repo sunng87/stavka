@@ -54,6 +54,8 @@
       (is (= 1 ($ conf :object.child))))))
 
 (deftest test-global
+  (testing "no global config available"
+    (is (thrown? clojure.lang.ExceptionInfo ($$ :user))))
   (global! (env)
            (properties (classpath "/test.properties")))
   (is (some? ($$ :user)))

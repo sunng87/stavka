@@ -193,8 +193,9 @@
   "Get configuration item from the global store."
   ([key] ($$ key nil))
   ([key default-value]
-   (when-let [holders @global-config]
-     ($ holders key default-value))))
+   (if-let [holders @global-config]
+     ($ holders key default-value)
+     (throw (ex-info "No global config available. Use stavka.core/global! to setup" {})))))
 
 (defn $l
   "Get configuration as long"
@@ -208,8 +209,9 @@
   "Get configuration from the global store as long"
   ([key] ($$l key nil))
   ([key default-value]
-   (when-let [holders @global-config]
-     ($l holders key default-value))))
+   (if-let [holders @global-config]
+     ($l holders key default-value)
+     (throw (ex-info "No global config available. Use stavka.core/global! to setup")))))
 
 (defn $f
   "Get configuration as double"
@@ -223,8 +225,9 @@
   "Get configuration from the global store as double"
   ([key] ($$f key nil))
   ([key default-value]
-   (when-let [holders @global-config]
-     ($f holders key default-value))))
+   (if-let [holders @global-config]
+     ($f holders key default-value)
+     (throw (ex-info "No global config available. Use stavka.core/global! to setup" {})))))
 
 (defn $s
   "Get configuration as string"
@@ -238,8 +241,9 @@
   "Get configuration from the global store as string"
   ([key] ($$s key nil))
   ([key default-value]
-   (when-let [holders @global-config]
-     ($s holders key default-value))))
+   (if-let [holders @global-config]
+     ($s holders key default-value)
+     (throw (ex-info "No global config available. Use stavka.core/global! to setup" {})))))
 
 (defn $b
   "Get configuration as boolean"
@@ -253,8 +257,9 @@
   "Get configuration from the global store as boolean"
   ([key] ($$b key nil))
   ([key default-value]
-   (when-let [holders @global-config]
-     ($b holders key default-value))))
+   (if-let [holders @global-config]
+     ($b holders key default-value)
+     (throw (ex-info "No global config available. Use stavka.core/global! to setup" {})))))
 
 (defn stop-updaters!
   "Stop updater associated with holders."
