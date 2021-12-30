@@ -76,7 +76,13 @@ config instance and manage life-cycle of updater.
         (assoc component :config nil)))
 ```
 
-### Configuration file format:
+### Configuration format:
+
+#### ENV
+
+```sh
+export SOME_CONFIG_KEY="some-value"
+```
 
 #### EDN
 
