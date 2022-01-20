@@ -8,7 +8,8 @@
                                   [cheshire "5.10.1"]
                                   [clj-commons/clj-yaml "0.7.107"]
                                   [clj-http "3.12.3"]
-                                  [hawk "0.2.11"]]
+                                  [hawk "0.2.11"]
+                                  [org.clojure/tools.cli "1.0.206"]]
                    :jvm-opts ["-Dstavka.test.attr=yes"]
                    :test-selectors {:default [#(not= (str %) "stavka.minimal-test") (constantly true)]}}
 
