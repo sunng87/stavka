@@ -99,6 +99,22 @@
   (ConfigHolder. nil nil nil nil (stavka.resolvers.options/resolver) (atom nil)))
 
 (utils/if-provided
+ '[clojure.tools.cli]
+
+ ;; when tools.cli is on classpath
+ (do
+   (require 'stavka.resolvers.cli)
+   (let [rsv @(resolve 'stavka.resolves.cli/resolver)]
+     (defn cli
+       "tools.cli configuration parser"
+       [args parser]
+       (ConfigHolder. nil nil nil nil (rsv args parser) (atom nil)))))
+
+ (defn cli [& _]
+   (throw (UnsupportedOperationException.
+           "tools.clj is not on classpath, cli resolver is disabled"))))
+
+(utils/if-provided
  '[cheshire.core]
 
  ;; when cheshire is on classpath
