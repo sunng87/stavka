@@ -21,6 +21,8 @@ which manages configuration from various sources.
   * Formats:
     * Environment variables `(env)`
     * JVM options (-D) `(options)`
+    * Commandline options with tools.cli parser `(cli args
+      cli-parser)`, enabled when `clojure.tools.cli` on classpath
     * EDN `(edn)`
     * JSON `(json)`, enabled when `cheshire` on classpath
     * YAML `(yaml)`, enabled when `clj-yaml` on classpath
