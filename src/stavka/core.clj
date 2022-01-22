@@ -103,8 +103,8 @@
 
  ;; when tools.cli is on classpath
  (do
-   (require 'stavka.resolvers.cli)
-   (let [rsv @(resolve 'stavka.resolves.cli/resolver)]
+   (require 'stavka.resolvers.args)
+   (let [rsv @(resolve 'stavka.resolvers.args/resolver)]
      (defn cli
        "tools.cli configuration parser"
        [args parser]
@@ -112,7 +112,7 @@
 
  (defn cli [& _]
    (throw (UnsupportedOperationException.
-           "tools.clj is not on classpath, cli resolver is disabled"))))
+           "tools.cli is not on classpath, cli resolver is disabled"))))
 
 (utils/if-provided
  '[cheshire.core]

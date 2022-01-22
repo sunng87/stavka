@@ -5,7 +5,7 @@
 (defrecord CliArgumentResolver [parsed-options]
   sp/Resolver
   (resolve [_ _ k]
-    (get parsed-options k))
+    (get (:options parsed-options) (keyword k)))
   (initial-state [_] nil))
 
 (defn resolver

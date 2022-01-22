@@ -14,6 +14,11 @@
   (testing "environment with prefix"
     (let [conf (using (env :prefix "US"))]
       (is (some? ($ conf :er)))))
+  (testing "cli options"
+    (let [conf (using (cli ["-p" "123" "--config" "test.conf"]
+                           [["-p" "--port PORT" "Port Number" :id :port :parse-fn #(Integer/parseInt %)]
+                            [nil "--config CONFIG" "Config Name" :id :config]]))]
+      (is (= 123 ($ conf :port)))))
   (testing "get json config from classpath or file"
     (let [conf (using (json (classpath "/test.json")))]
       (is (= 1 ($ conf :object.child)))
