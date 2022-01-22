@@ -29,6 +29,9 @@ which manages configuration from various sources.
     * Properties `(property)`
 * Reloading by
   * Watching file system `(watch)`, enabled when `hawk` on classpath
+  * Watching file system `(watch2)` using
+    [beholder](https://github.com/nextjournal/beholder) as backend,
+    enabled when `heholder` on classpath
   * Polling the source `(poll)`
 * Listeners for value changing `(on-change!)`
 * Type conversion `($l) ($f) ($b) ($s)`
