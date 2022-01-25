@@ -56,6 +56,9 @@
       (is (= "yes" ($ conf :stavka.test.attr)))))
   (testing "file watch updater"
     (let [conf (using (json (watch (file "./dev-resources/test.json"))))]
+      (is (= 1 ($ conf :object.child)))))
+  (testing "file watch2 updater"
+    (let [conf (using (json (watch2 (file "./dev-resources/test.json"))))]
       (is (= 1 ($ conf :object.child))))))
 
 (deftest test-global
@@ -73,6 +76,19 @@
       (try
         (spit path (che/generate-string {:test 1}))
         (let [conf (using (json (watch (file path))))]
+          (is (= 1 ($ conf :test)))
+          (spit path (che/generate-string {:test 2}))
+          (Thread/sleep 100)
+          (is (= 2 ($ conf :test)))
+
+          (stop-updaters! conf))
+        (finally
+          (io/delete-file path)))))
+  (testing "same test with watch2"
+    (let [path "./target/watch2-test.json"]
+      (try
+        (spit path (che/generate-string {:test 1}))
+        (let [conf (using (json (watch2 (file path))))]
           (is (= 1 ($ conf :test)))
           (spit path (che/generate-string {:test 2}))
           (Thread/sleep 100)
