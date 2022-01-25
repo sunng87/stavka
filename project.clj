@@ -4,8 +4,8 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.10.3"]]
-  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.15.2" :scope "test"]
-                                  [cheshire "5.10.1"]
+  :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.17.2" :scope "test"]
+                                  [cheshire "5.10.2"]
                                   [clj-commons/clj-yaml "0.7.107"]
                                   [clj-http "3.12.3"]
                                   [hawk "0.2.11"]
@@ -15,9 +15,9 @@
 
              :example {:dependencies [;; jdbc
                                       [org.clojure/java.jdbc "0.7.12"]
-                                      [org.hsqldb/hsqldb "2.6.0"]
+                                      [org.hsqldb/hsqldb "2.6.1"]
                                       ;; kubernetes
-                                      [io.fabric8/kubernetes-client "5.7.2"]
+                                      [io.fabric8/kubernetes-client "5.12.2"]
                                       ;; vault
                                       [amperity/vault-clj "1.0.6"]]
                        :source-paths ["examples"]}
