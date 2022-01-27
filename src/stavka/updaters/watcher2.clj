@@ -27,7 +27,7 @@
       (beholder/stop watcher))))
 
 (defn watch
-  "Watch file system change and reload source, works on JDK7 and above. Note that watch updater can only work with file source."
+  "Watch file system change and reload source, works on JDK 8 and above. This function is based on [beholder](https://github.com/nextjournal/beholder) and [directory-watcher](https://github.com/gmethvin/directory-watcher), which has a watch service on Mac OS instead of default poll based implementation."
   [file-source]
   (if-let [file (:filepath file-source)]
     [file-source
