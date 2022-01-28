@@ -180,6 +180,19 @@
    (throw (UnsupportedOperationException.
            "hawk is not found on classpath, file system watching is disabled."))))
 
+(utils/if-provided
+ 'nextjournal.beholder
+
+ ;; beholder is provided
+ (do
+   (require 'stavka.updaters.watcher2)
+   (let [the-watcher (resolve 'stavka.updaters.watcher2/watch)]
+     (def watch2 the-watcher)))
+ ;; disable fs watcher
+ (defn watch2 [_]
+   (throw (UnsupportedOperationException.
+           "hawk is not found on classpath, file system watching is disabled."))))
+
 (utils/import-var poll stavka.updaters.poller/poll)
 
 (defmacro using
