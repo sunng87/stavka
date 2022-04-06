@@ -3,7 +3,7 @@
   :url "https://github.com/sunng87/stavka"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.11.0"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]]
   :profiles {:dev {:dependencies [[info.sunng/ring-jetty9-adapter "0.17.4" :scope "test"]
                                   [cheshire "5.10.2"]
                                   [clj-commons/clj-yaml "0.7.108"]
